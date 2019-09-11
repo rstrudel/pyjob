@@ -30,7 +30,6 @@ def launch_jobs(pbs_template, pbs_args, user_dict_args, no_qsub):
         print(dict_args)
         with open(pbs_file, 'w') as f:
             pbs_content = pbs_template.format(**dict_args)
-            # print(pbs_content)
             f.write(pbs_content)
         if not no_qsub:
             subprocess.run(['qsub', pbs_file])
