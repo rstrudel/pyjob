@@ -12,9 +12,9 @@ from pyqsub.settings import LOG_DIR, PBS_DIR, CFG_DIR
 def create_template(pbs_dir, pbs_file):
     template = ''
     with open(os.path.join(pbs_dir, 'header.pbs'), 'r') as f:
-        template = '# HEADER\n'+f.read()
+        template = '# HEADER\n' + f.read()
     with open(os.path.join(pbs_dir, pbs_file), 'r') as f:
-        template += '\n\n# EXPERIMENT\n'+f.read()
+        template += '\n\n# EXPERIMENT\n' + f.read()
     return template
 
 
@@ -37,6 +37,7 @@ def launch_jobs(template, args, config, no_qsub):
     if not no_qsub:
         print('{} jobs launched.'.format(len(list_dict_args)))
 
+
 def parse_template(template):
     args = list(
         set([
@@ -45,11 +46,13 @@ def parse_template(template):
         ]))
     return args
 
+
 def show_experiment(template, args, config_file):
     print('Arguments:\n{}\n'.format(args))
     with open(config_file) as f:
         print('Config:\n{}\n'.format(f.read()))
     print('Template (.pbs):\n{}'.format(template))
+
 
 @click.command()
 @click.argument('pbs-file', type=str)
