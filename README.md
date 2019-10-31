@@ -1,6 +1,6 @@
 ## 1. Setup
 
-Create a template file with the command you want to run in the `template` folder. The template file conrains a set of commands with arguments than will be automatically filled with the config file parameters. To define the set of parameters of your experiment, create a yaml config file containing the parameters in the `config` folder. You can define a set of parameters that are global to all the experiments in `config/default.yml`, for example the jobs logging directory, or the conda envrionment you are using. If one parameter is redefined is the user config file, then it overrides the default value.
+Create a template file with the command you want to run in the `template` folder. The template file contains a set of commands with arguments than will be automatically filled with the config file parameters. To define the set of parameters of your experiment, create a yaml config file containing the parameters in the `config` folder. You can define a set of parameters that are global to all the experiments in `config/default.yml`, for example the jobs logging directory, or the conda envrionment you are using. If one parameter is redefined is the user config file, then it overrides the default value.
 
 ## 2. Run
 Submit a set of jobs to the scheduler with
