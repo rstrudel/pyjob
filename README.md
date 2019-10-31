@@ -30,7 +30,7 @@ last_name:
 You should get an output similar to this one:
 ```
 Fixed configuration on all the experiments:
-{'code_dir': '/sequoia/data1/rstrudel/code', 'job_log_dir': '/sequoia/data1/rstrudel/exps', 'conda_env_name': 'robot', 'machine': 'inria', 'job_name': 'print_hello'} 
+{'code_dir': '/sequoia/data1/rstrudel/code', 'job_log_dir': '/sequoia/data1/rstrudel/exps', 'job_name': 'print_hello'} 
 
 Experiments:
 0: {'first_name': 'Bob', 'last_name': 'Dylan'}
