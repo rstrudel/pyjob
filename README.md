@@ -31,7 +31,7 @@ last_name:
 - Jenkins
 ```
 
-You should get an output similar to this one:
+By running `python -m pyjob.launch hello hello.yml`, you should get an output similar to this one:
 ```
 Fixed configuration on all the experiments:
 {'code_dir': '/sequoia/data1/rstrudel/code', 'job_log_dir': '/sequoia/data1/rstrudel/exps', 'job_name': 'print_hello'} 
