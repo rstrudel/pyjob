@@ -11,8 +11,8 @@ python -m pyjob.launch template config.yml
 
 ## 3. Create an experiment
 
-Create a template file with the command you want to run in the `template` folder.
-Create a yaml config file with the parameters you want to set in the `config` folder.\\
+Create a template file with the command you want to run in the `template` folder.<br/>
+Create a yaml config file with the parameters you want to set in the `config` folder.<br/>
 
 You can define a set of parameters that are global to all the experiments in `config/default.yml`, for example the jobs logging directory, or the conda envrionment you are using. If one parameter is redefined is the user config file, then it overrides the default value.
 
