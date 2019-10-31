@@ -1,7 +1,7 @@
 #$ -l mem_req=8G
 #$ -l h_vmem=10000G
 #$ -pe serial 1
-#$ -q zeus.q,titan.q,gaia.q,chronos.q,gpu.q
+#$ -q zeus.q,titan.q,gaia.q,chronos.q,gpu.q,athena.q
 # -q all.q,bigmem.q
 #$ -e {job_log_dir}
 #$ -o {job_log_dir}

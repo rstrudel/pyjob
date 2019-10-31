@@ -6,8 +6,8 @@ python -m pyjob.launch template config.yml
 ```
 
 ## 2. Options
-`--show-args`: show user arguments of a template.<br/>
-`--no-sub`: print the list of jobs parameters without sending the jobs.<br/>
+`--show`: show arguments of a template without submitting the jobs.<br/>
+`--no-sub`: print the list of jobs parameters without submitting the jobs.<br/>
 
 ## 3. Create an experiment
 
