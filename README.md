@@ -23,6 +23,8 @@ python -c "print('Hello {first_name} {last_name}')"
 ```
 Config example:
 ```
+job_name:
+- print_hello
 first_name:
 - Bob
 - May
