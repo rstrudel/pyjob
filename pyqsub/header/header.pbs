@@ -1,0 +1,15 @@
+#$ -l mem_req=8G
+#$ -l h_vmem=10000G
+#$ -pe serial 1
+#$ -q zeus.q,titan.q,gaia.q,chronos.q,gpu.q
+# -q all.q,bigmem.q
+#$ -e {job_log_dir}
+#$ -o {job_log_dir}
+#$ -N {job_name}
+# -l h=!gpu113
+
+# conda
+. /sequoia/data1/rstrudel/miniconda3/etc/profile.d/conda.sh
+export LD_LIBRARY_PATH=/sequoia/data1/rstrudel/miniconda3/envs/bin/lib:$LD_LIBRARY_PATH
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
