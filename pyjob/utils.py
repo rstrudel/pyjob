@@ -3,7 +3,7 @@ from sklearn.model_selection import ParameterGrid
 import yaml
 from string import Formatter
 
-from pyqsub.settings import BASE_DIR
+from pyjob.settings import BASE_DIR
 
 
 def get_scheduler_infos(scheduler):

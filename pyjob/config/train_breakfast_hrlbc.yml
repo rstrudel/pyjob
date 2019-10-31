@@ -1,0 +1,31 @@
+bc_model_epoch:
+- 68
+bc_model_name:
+- breakfast_film_nosetup_2
+conda_env_name:
+- rl0
+env_name:
+- UR5-EGL-BreakfastRandCamEnv-v0
+hrlbc_model_name:
+- breakfast_hrlbc_nosetup
+job_name:
+- breakfast
+log_dir:
+- /sequoia/data1/rstrudel/logs
+max_length:
+- 2000
+n_processes:
+- 12
+seed:
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+timescale:
+- 200
+image_augmentation:
+- "kinect2_learned"

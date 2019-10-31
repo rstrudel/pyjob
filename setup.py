@@ -14,8 +14,8 @@ def read_requirements_file(filename):
 
 
 setup(
-    name='pyqsub',
+    name='pyjob',
     version='0.0.1',
-    description='Generate qsub from template files easily',
+    description='Generate jobs from template files easily',
     packages=find_packages(),
     install_requires=read_requirements_file('requirements.txt'))

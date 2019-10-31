@@ -1,0 +1,9 @@
+# go to bc location
+conda activate {conda_env_name}
+cd /sequoia/data1/rstrudel/code/bc
+
+python3 -m ppo.train.run with general.env_name={env_name} general.max_length={max_length} \
+general.num_processes={n_processes} general.seed={seed} \
+bc.bc_model_name={bc_model_name} bc.bc_model_epoch={bc_model_epoch} bc.augmentation={image_augmentation} \
+hierarchy.master_type=conv hierarchy.timescale={timescale} \
+log.folder={hrlbc_model_name}

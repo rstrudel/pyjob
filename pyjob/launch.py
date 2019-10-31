@@ -4,8 +4,8 @@ import subprocess
 import getpass
 from termcolor import colored
 
-from pyqsub.utils import get_scheduler_infos, make_dirs, create_template, parse_template, load_config
-from pyqsub.utils import create_args_from_config, show_submission
+from pyjob.utils import get_scheduler_infos, make_dirs, create_template, parse_template, load_config
+from pyjob.utils import create_args_from_config, show_submission
 
 
 def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):

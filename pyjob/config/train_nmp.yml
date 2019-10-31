@@ -1,0 +1,20 @@
+conda_env_name:
+- robot
+job_name:
+- _100rooms_5obst_her
+env_name:
+- Narrow2DGoal100RoomsEnv-v0
+checkpoint_dir:
+- 100rooms_5obst_her
+run:
+- 0
+h_dim:
+- 512
+n_layers:
+- 2
+- 4
+frac_goal_replay:
+- 0.0
+- 0.25
+- 0.5
+- 0.8

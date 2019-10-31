@@ -1,0 +1,79 @@
+#$ -l mem_req=8G
+#$ -l h_vmem=10000G
+#$ -pe serial 1
+#$ -q gaia.q,chronos.q,titan.q,zeus.q
+#$ -e /sequoia/data1/rstrudel/logs/ 
+#$ -o /sequoia/data1/rstrudel/logs/ 
+#$ -N ppo_bowl
+# -l h=!gpu113
+
+. /sequoia/data1/rstrudel/miniconda3/etc/profile.d/conda.sh
+conda create --name rl0 --clone bullet
+export LD_LIBRARY_PATH=/sequoia/data1/rstrudel/miniconda3/envs/bin/lib:$LD_LIBRARY_PATH
+export LC_ALL=C.UTF-8 
+export LANG=C.UTF-8 
+
+cd /sequoia/data1/rstrudel/bc
+conda activate bullet
+
+# ppo
+python3 -m ppo.train.run with general.env_name=UR5-RGL-Bowl2ObjRandCamEnv-v0 general.max_length=600, general.num_processes=12 general.seed=0 \
+bc.bc_model_name=bowl_2obj_film_kinect2learned_400 bc.bc_model_epoch=92 bc.augmentation=kinect2_learned \
+hierarchy.master_type=conv hierarchy.timescale=80 \
+log.folder=bowl_400_temp
+
+# ppo
+# python -m ppo.scripts.train --env-name UR5-BowlCamEnv-v0 --num-mini-batch 4 --num-processes 12 --max-length 600 --timescale 40 --entropy-coef 0.05 --value-loss-coef 1 --use-bcrl-setup --logdir /sequoia/data2/rstrudel/nets_ppo/bowl0 --checkpoint-path /sequoia/data2/rstrudel/nets_joints/bowl0_featbranch/resnet18_featbranch_46.pth --num-skills 4 --dim-skill-action 8 --num-skill-action-pred 4 --save-gifs --seed 4
+# --checkpoint-path=/sequoia/data2/rstrudel/nets_joints/bowl0_featbranch/resnet18_featbranch_54.pth --archi resnet18_featbranch --num-skill-action-pred=4 --dim-skill-action=8 --input-type=depth --log-interval=1 --logdir=/sequoia/data2/rstrudel/nets_ppo/bowl0_newppo --seed 2
+
+# ppo script
+# python -m ppo.scripts.train --env-name UR5-BowlCamEnv-v0 --num-mini-batch 4 --num-processes 8 --max-length 600 --timescale 40 --entropy-coef 0.05 --value-loss-coef 1 --logdir /sequoia/data2/rstrudel/nets_ppo/bowl0_script --checkpoint-path /sequoia/data2/rstrudel/nets_joints/bowl0_featbranch/resnet18_featbranch_46.pth --num-skills 4 --dim-skill-action 8 --num-skill-action-pred 4 --save-gifs --seed 0
+
+# salad
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_joints/salad7_featbranch_100 --data /sequoia/data2/rstrudel/lmdb_joints/salad7 -cam 20 -traj 125 -e 200 -bs 64 -da 7 -sa [1,10,20,30] -ts 3 -a resnet18_featbranch --input_type rgbd -as joints --skills -nsub 6 -ei 4 -ep 0.05 
+
+# salad full bc
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_joints/saladbc_20cam_200 --data /sequoia/data2/rstrudel/lmdb_joints/salad_2cups_bc -cam 20 -traj 225 -e 200 -bs 64 -as joints -da 7 -sa [1,10,20,30] -ts 3 -a resnet18 --input_type rgbd -ei 4 -ep 0.05 --length_factor 1
+
+# pick joints
+python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_supmat/pour_20_5cam --data /sequoia/data2/rstrudel/lmdb_supmat/pour_5cam -cam 5 -traj 22 -e 200 -bs 64 -as joints -da 7 -sa [1,10,20,30] -ts 3 -a resnet18 --input_type depth -ei 4 -ep 0.05 --length_factor 1
+
+# bowl
+# python -m bc.net.train --savedir /sequoia/data2/rstrudel/nets_joints/bowl_fullskill_20 --data /sequoia/data2/rstrudel/lmdb/bowl_fullskill_20 -cam 20 -traj 20 -e 200 -bs 64 -da 7 -sa [1,10,20,30] -ts 3 -a resnet18_featbranch --input_type depth -as joints --skills -nsub 4 --length_factor 3
+# -ei 4 -ep 0.05 --length_factor 3
+# python -m bc.net.train --savedir /sequoia/data2/rstrudel/nets_joints/bowl_skill_20 --data /sequoia/data2/rstrudel/lmdb_joints/bowl_skill_20cam_30 -cam 20 -traj 25 -e 200 -bs 64 -da 7 -sa [1,10,20,30] -ts 3 -a resnet18_featbranch --input_type depth -as joints --skills -nsub 4 -ei 4 -ep 0.05 --length_factor 3
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_joints/bowl_x1_20cam_50 --data /sequoia/data2/rstrudel/lmdb_joints/bowl_x1 -cam 20 -traj 50 -e 200 -bs 64 -as joints -da 7 -sa [1,10,20,30] -ts 3 -a resnet18 --input_type depth -ei 4 -ep 0.05 --length_factor 1 --resume
+
+# bowl old repo
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_joints/bowl_skills_oldrepo --data /sequoia/data2/rstrudel/lmdb_oldrepo/bowl -cam 20 -traj 200 -e 200 -bs 64 -da 7 -sa [1,10,20,30] -ts 3 -a resnet18_featbranch --input_type depth -as joints --skills -nsub 4 -ei 4 -ep 0.05
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_joints/bowl_skills_oldrepo --data /sequoia/data2/rstrudel/lmdb_oldrepo/bowl -cam 20 -traj 200 -e 200 -bs 64 -da 7 -sa [1,10,20,30] -ts 3 -a resnet18_fc64 --input_type depth -as joints --skills -nsub 4 -ei 4 -ep 0.05
+
+# real robot
+# python -m mime.net.train -sd /sequoia/data2/rstrudel/nets_exp/pick_real_gripce_rdscl_200 --data /sequoia/data2/rstrudel/lmdb_real/pick_filter -cam 1 -traj 200 -e 150 -bs 64 -da 4 -sa [1,10,20,30] -ts 3 -a resnet18 --real_action_factors --lam_grip 0.1
+
+# simulation
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_plane/tower_50cam_100_res18 --data /sequoia/data2/rstrudel/lmdb_plane/tower -cam 50 -traj 100 -e 200 -bs 64 -da 4 -sa [1,10,20,30] -ts 3 -a resnet18 --input_type depth --set_action_factors
+# python -m mime.net.train -sd /sequoia/data2/rstrudel/nets_hr/pick_50cam_200_2 --data /sequoia/data2/rstrudel/lmdb_hr/pick -cam 50 -traj 200 -e 200 -bs 64 -da 4 -sa [1,10,20,30] -ts 3 -a resnet18
+
+
+# pouring_ings
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_rgbd/pouring_ings_20cam_50 --data /sequoia/data2/rstrudel/lmdb_rgbd/pouring_ings -cam 20 -traj 50 -e 200 -bs 64 -da 7 -sa [1,10,20,30] -ts 3 -a resnet18 --input_type rgbd --set_action_factors --data_split
+
+# bottle
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_rgbd/bottle_20cam_200 --data /sequoia/data2/rstrudel/lmdb_rgbd/bottle -cam 20 -traj 200 -e 200 -bs 64 -da 7 -sa [1,10,20,30] -ts 3 -a resnet18 --input_type rgbd --data_split
+
+# mujoco pick place
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_mujoco/pick_place_10e3.5_rgbd --data /sequoia/data2/rstrudel/lmdb_mujoco/pick_place_3 -cam 1 -traj 3250 -e 200 -bs 64 -as tool -da 4 -sa [1,10,20,30] -ts 3 -a resnet18 --input_type rgbd --length_factor 1 -ei 4 -ep 0.05 --resume
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_mujoco/pick_place_monocam_10e2.5 --data /sequoia/data2/rstrudel/lmdb_mujoco/pick_place_10000 -cam 1 -traj 350 -e 200 -bs 64 -da 4 -sa [1,10,20,30] -ts 3 -a resnet18 --input_type rgbd -ei 4 -ep 0.05 --length_factor 3
+
+# goal conditioned
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_rgbd/gocube_20cam_100_early --data /sequoia/data2/rstrudel/lmdb_rgbd/gocube -cam 20 -traj 100 -e 200 -bs 64 -da 4 -sa [1,10,20,30] -ts 3 -a resnet18 --input_type rgbd --goal_conditioned
+
+# pick joints
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_joints/pick_20cam_20_res18 --data /sequoia/data2/rstrudel/lmdb_joints/pick -cam 20 -traj 20 -e 200 -da 7 -sa [1,10,20,30] -ts 3 -a resnet18 --input_type depth --action_space joints --length_factor 5
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_joints/pick_20cam_200_res18fc --data /sequoia/data2/rstrudel/lmdb_joints/pick -cam 20 -traj 200 -e 200 -da 7 -sa [1,10,20,30] -ts 3 -a resnet18fc --input_type depth --action_space joints
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_joints/pick_20cam_200_sres10fc --data /sequoia/data2/rstrudel/lmdb_joints/pick -cam 20 -traj 200 -e 200 -da 7 -sa [1,10,20,30] -ts 3 -a sresnet10fc --input_type depth --action_space joints
+
+# bottle joints
+# python -m bc.net.train -sd /sequoia/data2/rstrudel/nets_joints/bottle_2_100_res18fc --data /sequoia/data2/rstrudel/lmdb_joints/bottle_2 -cam 20 -traj 100 -e 200 -bs 64 -da 7 -sa [1,10,20,30] -ts 3 -a resnet18fc --input_type depth --action_space joints 
+
