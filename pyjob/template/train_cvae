@@ -1,4 +1,0 @@
-conda activate {conda_env_name}
-cd {code_dir}/nmp
-
-python -m nmp.train_cvae {env_name} {checkpoint_dir}/beta{beta} --beta {beta} --machine {machine}

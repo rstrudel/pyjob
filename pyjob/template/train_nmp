@@ -1,4 +1,0 @@
-conda activate {conda_env_name}
-cd /sequoia/data1/rstrudel/code/nmp
-
-python -m nmp.train {env_name} {checkpoint_dir}/hdim{h_dim}_n{n_layers}_goalreplay{frac_goal_replay}_run{run} -h-dim {h_dim} -n-layers {n_layers} --her --frac-goal-replay {frac_goal_replay}
