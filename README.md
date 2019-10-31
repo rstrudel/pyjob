@@ -15,7 +15,7 @@ python -m pyjob.launch template config.yml
 ## 4. Example
 Template example:
 ```
-python -c "print('Hello {} {}'.format({first_name}, {last_name}))"
+python -c "print('Hello {first_name} {last_name}')"
 ```
 Config example:
 ```
@@ -27,10 +27,22 @@ last_name:
 - Jenkins
 ```
 
-It should run 4 jobs as it will run all the possible combinations of parameters. The output of each job will be:
+You should get an output similar to this one:
 ```
-Hello Bob Dylan
-Hello Bob Jenkins
-Hello May Dylan
-Hello May Jenkins
+Fixed configuration on all the experiments:
+{'code_dir': '/sequoia/data1/rstrudel/code', 'job_log_dir': '/sequoia/data1/rstrudel/exps', 'conda_env_name': 'robot', 'machine': 'inria', 'job_name': 'print_hello'} 
+
+Experiments:
+0: {'first_name': 'Bob', 'last_name': 'Dylan'}
+Your job 7268149 ("print_hello") has been submitted
+1: {'first_name': 'Bob', 'last_name': 'Jenkins'}
+Your job 7268150 ("print_hello") has been submitted
+2: {'first_name': 'May', 'last_name': 'Dylan'}
+Your job 7268151 ("print_hello") has been submitted
+3: {'first_name': 'May', 'last_name': 'Jenkins'}
+Your job 7268152 ("print_hello") has been submitted
+
+4 jobs launched.
+You can check the scripts in /sequoia/data1/rstrudel/exps/scripts/print_hello_*.pbs
+You can check the logs in /sequoia/data1/rstrudel/exps/print_hello.o*
 ```

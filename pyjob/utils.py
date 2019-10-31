@@ -68,6 +68,9 @@ def load_config(config_file):
 
 
 def create_args_from_config(template_args, config):
+    unused_config_args = [arg for arg in config.keys() if arg not in template_args]
+    print('Unused configuration parameters: {}'.format(unused_config_args))
+    config = {k: v for k, v in config.items() if k not in unused_config_args}
     list_dict_args = list(ParameterGrid(config))
     for arg in template_args:
         if arg not in list_dict_args[0]:
