@@ -45,7 +45,7 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
 @click.command()
 @click.argument('template-file', type=str)
 @click.argument('config-file', type=str)
-@click.option('--scheduler', default='sge', type=str)
+@click.option('--scheduler', '-sched', default='sge', type=str)
 @click.option('--show/--no-show', default=False)
 @click.option('--sub/--no-sub', default=True)
 def main(template_file, config_file, scheduler, show, sub):

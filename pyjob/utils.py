@@ -26,7 +26,7 @@ def get_scheduler_infos(scheduler):
 
 
 def make_dirs(jobs_log_dir):
-    scripts_dir = os.path.join(jobs_log_dir, 'scripts')
+    scripts_dir = [os.path.join(jobs_log_dir, 'scripts')]
     for exp_dir in scripts_dir:
         if not os.path.exists(exp_dir):
             os.makedirs(exp_dir, exist_ok=True)
