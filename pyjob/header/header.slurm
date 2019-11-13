@@ -1,8 +1,11 @@
 #!/bin/bash
 #SBATCH --job-name={job_name}         # nom du job
 #SBATCH --ntasks=1                  # nombre de tâche (un unique processus ici)
-#SBATCH --gres=gpu:1                # nombre de GPU à réserver (un unique GPU ici)
-#SBATCH --cpus-per-task=10          # nombre de coeurs à réserver (un quart du noeud)
+#SBATCH --qos=qos_gpu-t3                  # nombre de tâche (un unique processus ici)
+#SBATCH --partition=gpu_p1                  # nombre de tâche (un unique processus ici)
+#SBATCH --gres=gpu:{n_gpus}         # nombre de GPU à réserver (un unique GPU ici)
+#SBATCH --cpus-per-task={n_cpus}          # nombre de coeurs à réserver (un quart du noeud)
+
 # /!\ Attention, la ligne suivante est trompeuse mais dans le vocabulaire
 # de Slurm "multithread" fait bien référence à l'hyperthreading.
 #SBATCH --hint=nomultithread        # on réserve des coeurs physiques et non logiques
@@ -17,6 +20,3 @@ module purge
 module load anaconda-py3/2019.03
 module load cuda/10.1.1
 module load cudnn/10.1-v7.5.1.10
-
-# echo des commandes lancées
-set -x

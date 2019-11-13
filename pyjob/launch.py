@@ -55,7 +55,7 @@ def main(template_file, config_file, scheduler, show, sub):
     config = load_config(scheduler_infos, config_file)
     make_dirs(config['job_log_dir'][0])
     if show:
-        show_submission(template, args, config_file)
+        show_submission(template, template_args, config)
         print('Experiment not launched!')
     else:
         list_dict_args = create_args_from_config(template_args, config)

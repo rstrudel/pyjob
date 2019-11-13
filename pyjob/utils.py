@@ -2,6 +2,7 @@ import os
 from sklearn.model_selection import ParameterGrid
 import yaml
 from string import Formatter
+from termcolor import colored
 
 from pyjob.settings import BASE_DIR
 
@@ -80,12 +81,11 @@ def create_args_from_config(template_args, config):
     return list_dict_args
 
 
-def show_submission(template, args, config_file):
+def show_submission(template, args, config):
     color = 'yellow'
     print(colored('Template:', color))
     print('{}\n'.format(template))
     print(colored('Arguments:', color))
     print('{}\n'.format(args))
     print(colored('Config:', color))
-    with open(config_file) as f:
-        print('{}'.format(f.read()))
+    print('{}'.format(yaml.dump(config)))
