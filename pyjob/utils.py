@@ -11,12 +11,14 @@ def get_scheduler_infos(scheduler):
         'sge': {
             'header': 'header.pbs',
             'extension': 'pbs',
-            'submit_command': 'qsub'
+            'submit_command': 'qsub',
+            'config': 'default_sge.yml',
         },
         'slurm': {
             'header': 'header.slurm',
             'extension': 'slurm',
-            'submit_command': 'sbatch'
+            'submit_command': 'sbatch',
+            'config': 'default_slurm.yml',
         }
     }
     if scheduler not in scheduler_dict:
@@ -49,8 +51,8 @@ def parse_template(template):
     return args
 
 
-def load_config(config_file):
-    default_config_file = os.path.join(BASE_DIR, 'config', 'default.yml')
+def load_config(schduler_infos, config_file):
+    default_config_file = os.path.join(BASE_DIR, 'config', schduler_infos['config'])
     user_config_file = os.path.join(BASE_DIR, 'config', config_file)
     with open(default_config_file) as f:
         config = yaml.load(f, Loader=yaml.FullLoader)

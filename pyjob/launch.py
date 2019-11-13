@@ -52,7 +52,7 @@ def main(template_file, config_file, scheduler, show, sub):
     scheduler_infos = get_scheduler_infos(scheduler)
     template = create_template(scheduler_infos, template_file)
     template_args = parse_template(template)
-    config = load_config(config_file)
+    config = load_config(scheduler_infos, config_file)
     make_dirs(config['job_log_dir'][0])
     if show:
         show_submission(template, args, config_file)

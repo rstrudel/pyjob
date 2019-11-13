@@ -1,0 +1,8 @@
+code_dir:
+- /linkhome/rech/genini01/ufz72sf/code
+job_log_dir:
+- /gpfswork/rech/eta/ufz72sf/exps
+conda_env_name:
+- robot
+machine:
+- jean-zay
