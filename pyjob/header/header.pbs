@@ -9,7 +9,7 @@
 # -l h=!gpu113
 
 # conda
-. /sequoia/data1/rstrudel/miniconda3/etc/profile.d/conda.sh
-export LD_LIBRARY_PATH=/sequoia/data1/rstrudel/miniconda3/envs/bin/lib:$LD_LIBRARY_PATH
+. {conda_dir}/etc/profile.d/conda.sh
+export LD_LIBRARY_PATH={conda_dir}/envs/bin/lib:$LD_LIBRARY_PATH
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8

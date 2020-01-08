@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name={job_name}         # nom du job
 #SBATCH --ntasks=1                  # nombre de tâche (un unique processus ici)
-#SBATCH --qos=qos_gpu-t3                  # nombre de tâche (un unique processus ici)
-#SBATCH --partition=gpu_p1                  # nombre de tâche (un unique processus ici)
+#SBATCH --qos=qos_gpu-t3                  # qos: quality of service, define also queue ?
+#SBATCH --partition=gpu_p1                  # queue
 #SBATCH --gres=gpu:{n_gpus}         # nombre de GPU à réserver (un unique GPU ici)
 #SBATCH --cpus-per-task={n_cpus}          # nombre de coeurs à réserver (un quart du noeud)
 
@@ -18,5 +18,3 @@ module purge
 
 # chargement des modules
 module load anaconda-py3/2019.03
-module load cuda/10.1.1
-module load cudnn/10.1-v7.5.1.10

@@ -1,3 +1,5 @@
+conda_dir:
+- /sequoia/data1/rstrudel/miniconda3
 code_dir:
 - /sequoia/data1/rstrudel/code
 job_log_dir:
