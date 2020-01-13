@@ -8,3 +8,5 @@ conda_env_name:
 - robot
 machine:
 - inria
+n_gpus:
+- 1
