@@ -8,5 +8,7 @@ conda_env_name:
 - robot
 machine:
 - inria
+queues:
+- zeus.q,titan.q,gaia.q,titan.q
 n_gpus:
 - 1
