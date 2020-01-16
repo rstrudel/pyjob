@@ -6,7 +6,13 @@ conda_env_name:
 - robot
 machine:
 - jean-zay
+queue:
+- gpu_p1
+qos:
+- qos_gpu-t3
 n_gpus:
 - 1
 n_cpus:
 - 10
+time:
+- "20:00:00"
