@@ -1,0 +1,14 @@
+conda_dir:
+- /path
+conda_env_name:
+- /conda_env_name
+job_type_0:
+- besteffort
+job_type_1:
+- idempotent
+walltime:
+- "48:00:00"
+n_nodes:
+- 1
+n_cpus:
+- 10
