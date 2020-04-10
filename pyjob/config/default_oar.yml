@@ -1,5 +1,7 @@
+job_log_dir:
+- /path_to_log_dir
 conda_dir:
-- /path
+- /path_to_conda_dir
 conda_env_name:
 - /conda_env_name
 job_type_0:

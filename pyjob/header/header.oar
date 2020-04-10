@@ -5,6 +5,8 @@
 #OAR -t {job_type_0}
 #OAR -t {job_type_1}
 #OAR -l walltime={walltime}
+#OAR --stdout {job_log_dir}/{job_name}.out
+#OAR --stderr {job_log_dir}/{job_name}.err
 
 
 # conda
