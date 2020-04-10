@@ -1,9 +1,9 @@
 job_log_dir:
-- /path_to_log_dir
+- /home/rgarciap/logs
 conda_dir:
-- /path_to_conda_dir
+- /scratch/artemis/rgarciap/miniconda3
 conda_env_name:
-- /conda_env_name
+- base
 job_type_0:
 - besteffort
 job_type_1:

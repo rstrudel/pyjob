@@ -34,7 +34,7 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
             subprocess.run(
                 [
                     scheduler_infos["submit_command"],
-                    scheduler_infos["option"],
+                    scheduler_infos["submit_option"],
                     template_file,
                 ]
             )

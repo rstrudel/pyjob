@@ -1,6 +1,5 @@
 #! /bin/bash
 
-#OAR -l nodes={n_nodes}/core={n_cpus}
 #OAR -n {job_name}
 #OAR -t {job_type_0}
 #OAR -t {job_type_1}
