@@ -13,18 +13,21 @@ def get_scheduler_infos(scheduler):
             "header": "header.pbs",
             "extension": "pbs",
             "submit_command": "qsub",
+            "submit_option": "",
             "config": "default_sge.yml",
         },
         "slurm": {
             "header": "header.slurm",
             "extension": "slurm",
             "submit_command": "sbatch",
+            "submit_option": "",
             "config": "default_slurm.yml",
         },
         "oar": {
             "header": "header.oar",
             "extension": "oar",
-            "submit_command": "oarsub --scanscript",
+            "submit_command": "oarsub",
+            "submit_option": "--scanscript",
             "config": "default_oar.yml",
         },
     }
