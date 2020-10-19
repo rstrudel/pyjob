@@ -3,4 +3,4 @@ queues:
 n_gpus:
 - 1
 job_log_dir:
-- "pyjob/"
+- "~/pyjob/"
