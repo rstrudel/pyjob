@@ -82,7 +82,7 @@ Submitted batch job 555792
 
 4 jobs launched.
 You can check the scripts in pyjob/scripts/hello_*.slurm
-You can check the logs in pyjob/. A job output is stored as $JOB_ID.out and its errors as $JOB_ID.err.```
+You can check the logs in pyjob. A job output is stored as $JOB_ID.out and its errors as $JOB_ID.err.
 ```
 
 ## 4. Options
