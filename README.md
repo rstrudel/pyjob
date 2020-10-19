@@ -90,9 +90,9 @@ You can check the logs in pyjob. A job output is stored as $JOB_ID.out and its e
 `--show`: print a template and configuration file without submitting the jobs.<br/>
 
 
-## 5. Distributed jobs
+## 5. Distributed training
 
-You may want to run distributed jobs on a cluster, including jobs running in parallel over different nodes. If you are using [PyTorch](https://pytorch.org/) distributed library, the distributed processes can be initialized using a file with:
+You may want to run distributed training over multiples nodes on a cluster. If you are using [PyTorch](https://pytorch.org/) distributed library, the distributed processes can be initialized using a file with:
 ```
 dist.init_process_group(
     backend,
