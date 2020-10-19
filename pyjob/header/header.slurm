@@ -8,8 +8,8 @@
 
 #SBATCH --hint=nomultithread
 #SBATCH --time={time}
-#SBATCH --output={job_log_dir}/%j.out
-#SBATCH --error={job_log_dir}/%j.err
+#SBATCH --output={job_log_dir}/{job_name}.o%j
+#SBATCH --error={job_log_dir}/{job_name}.e%j
 
 # cleaning modules launched during interactive mode
 module purge
