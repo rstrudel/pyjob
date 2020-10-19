@@ -1,0 +1,6 @@
+queues:
+- zeus.q,titan.q,gaia.q,chronos.q
+n_gpus:
+- 1
+job_log_dir:
+- "pyjob"
