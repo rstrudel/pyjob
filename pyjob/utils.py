@@ -77,7 +77,7 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
 
     if submit:
         print(
-            f"You can check the logs in {job_log_dir}. A job output is stored as $JOB_ID.out and its errors as $JOB_ID.err."
+            f"You can check the logs in {job_log_dir}. A job output is stored as {jobs_name}.o* and its errors as {jobs_name}.e* ."
         )
     else:
         print("No jobs launched!")

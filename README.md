@@ -9,7 +9,7 @@ To test `pyjob`, you can directly run "Hello world" jobs with :
 python -m pyjob.launch hello hello.yml --scheduler slurm
 ```
 
-To try `pyjob` on your own experiments check Section 2, to check how the "Hello World" example was built check Section 3, to use `pyjob` for distributed training, check Section 5. Once set up, with only one command you will be able to submit a set of jobs defined by a template:
+To try `pyjob` on your own experiments check Section 2, to check how the "Hello World" example was built check Section 3, to use conda environments check Section 4 and to use `pyjob` for distributed training, check Section 6. Once set up, with only one command you will be able to submit a set of jobs defined by a template:
 
 ```
 python train.py --learning-rate {lr} --weight-decay {weight_decay} --dropout {dropout}
@@ -81,16 +81,28 @@ last_name: Casares
 Submitted batch job 555792
 
 4 jobs launched.
-You can check the scripts in pyjob/scripts/hello_*.slurm
-You can check the logs in pyjob. A job output is stored as $JOB_ID.out and its errors as $JOB_ID.err.
+You can check the scripts in ~/pyjob/scripts/hello_*.slurm
+You can check the logs in ~/pyjob/. A job output is stored as hello.o* and its errors as hello.e*.
 ```
 
-## 4. Options
+## 4. Anaconda
+
+If you want to activate a conda environment before starting an experiment, you will need to add the following lines to `header/header.slurm` (choose the header corresponding to your scheduler):
+
+```
+# conda
+. {conda_dir}/etc/profile.d/conda.sh
+export LD_LIBRARY_PATH={conda_dir}/envs/bin/lib:$LD_LIBRARY_PATH
+```
+
+`conda_dir` should be defined in `config/default_slurm.yml`, then at the top of your template you can add `conda activate {conda_env_name}` and either define the environment name in your configuration or directly in the template file.
+
+## 5. Options
 `--no-sub`: print the list of jobs parameters without submitting the jobs.<br/>
 `--show`: print a template and configuration file without submitting the jobs.<br/>
 
 
-## 5. Distributed training
+## 6. Distributed training
 
 You may want to run distributed training over multiples nodes on a cluster. If you are using [PyTorch](https://pytorch.org/) distributed library, the distributed processes can be initialized using a file with:
 ```
