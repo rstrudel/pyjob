@@ -8,7 +8,6 @@ To test `pyjob`, you can directly run "Hello world" jobs with :
 ```
 python -m pyjob.launch hello hello.yml --scheduler slurm
 ```
-Check the Section 3: Example to see the structure of template and configuration files.
 
 To try `pyjob` on your own experiments check Sections 2, to check how the example was built check Section 3, to use `pyjob` for distributed training, check Section 5. Once set up, with only one command you will be able to run a set jobs defined by a template:
 
