@@ -125,6 +125,10 @@ def load_config(schduler_infos, config_file):
     for arg in required_args:
         if arg not in config:
             raise ValueError("{} should be defined in config.".format(arg))
+
+    # allow job log dir in home directory
+    config["job_log_dir"] = str(Path(config["job_log_dir"]).expanduser())
+
     if len(config["job_name"]) > 1:
         raise ValueError("Only one job_name is allowed per experiment.")
 
