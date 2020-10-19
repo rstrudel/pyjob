@@ -2,13 +2,6 @@
 
 Simple library to launch batched jobs and run grid-search over parameters seamlessly. It includes multiple schedulers such as `sge`, `slurm` and `oar`. Given lists of parameters, it computes a cartesian product based on [sklearn.model_selection.ParameterGrid](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ParameterGrid.html) and launch one job for each combination in the parameters grid.<br/>
 
-To try `pyjob` and run your own experiments check Sections 1 to 4, to use `pyjob` for distributed training, check Section 5. Once set up, with only one command you will be able to run a set jobs defined by a template:
-
-```
-python train.py --learning-rate {lr} --weight-decay {weight_decay} --dropout {dropout}
-```
-
-Over a grid of learning rate, weight decay and dropout parameters defined in a configuration file.
 
 ## 1. Run
 To test `pyjob`, you can directly run "Hello world" jobs with :
@@ -17,14 +10,26 @@ python -m pyjob.launch hello hello.yml --scheduler slurm
 ```
 Check the Section 3: Example to see the structure of template and configuration files.
 
-To create your own experiments, check Section 4: Create an experiment. Once you have written a template file `template/experiment` and a configuration file `config/experiment.yml`, you can submit a set of jobs to a slurm scheduler with:
+To try `pyjob` on your own experiments check Sections 2, to check how the example was built check Section 3, to use `pyjob` for distributed training, check Section 5. Once set up, with only one command you will be able to run a set jobs defined by a template:
+
 ```
-python -m pyjob.launch experiment experiment.yml --scheduler slurm
+python train.py --learning-rate {lr} --weight-decay {weight_decay} --dropout {dropout}
 ```
 
-## 2. Options
-`--no-sub`: print the list of jobs parameters without submitting the jobs.<br/>
-`--show`: print a template and configuration file without submitting the jobs.<br/>
+Over a grid of learning rate, weight decay and dropout parameters defined in a configuration file.
+
+## 2. Create an experiment
+
+In the `template` folder, create a template file `experiment_name` with the command you want to run. Parameters defined with the configuration file should be put inside curly brackets \{\}.<br/>
+In the `config` folder, create a yaml configuration file `experiment_name.yml` containing the field of values of the variables between curly brackets.<br/>
+
+Run:
+
+```
+python -m pyjob.launch experiment_name experiment_name.yml --scheduler slurm
+```
+
+You can define a set of parameters that are global to all the experiments in `config/default_slurm.yml`, for example the jobs logging directory `job_log_dir`, the job queue `queue` or the conda envrionment you are using and so on. If one parameter is redefined in the user configuration file, then it overrides the default configuration.
 
 
 ## 3. Example: Hello World
@@ -80,18 +85,11 @@ Submitted batch job 555792
 You can check the scripts in pyjob/scripts/hello_*.slurm
 You can check the logs in pyjob/. A job output is stored as $JOB_ID.out and its errors as $JOB_ID.err.```
 ```
-## 4. Create an experiment
 
-In the `template` folder, create a template file `experiment_name` with the command you want to run. Parameters defined with the configuration file should be put inside curly brackets \{\}.<br/>
-In the `config` folder, create a yaml configuration file `experiment_name.yml` containing the field of values of the variables between curly brackets.<br/>
+## 4. Options
+`--no-sub`: print the list of jobs parameters without submitting the jobs.<br/>
+`--show`: print a template and configuration file without submitting the jobs.<br/>
 
-Run:
-
-```
-python -m pyjob.launch experiment_name experiment_name.yml --scheduler slurm
-```
-
-You can define a set of parameters that are global to all the experiments in `config/default_slurm.yml`, for example the jobs logging directory `job_log_dir`, the job queue `queue` or the conda envrionment you are using and so on. If one parameter is redefined in the user configuration file, then it overrides the default configuration.
 
 ## 5. Distributed jobs
 
