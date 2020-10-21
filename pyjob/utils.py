@@ -62,7 +62,7 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
             args_run = [scheduler_infos["submit_command"], template_file]
             submit_option = scheduler_infos["submit_option"]
             if submit_option:
-                args_run.insert(submit_option, 1)
+                args_run.insert(1, submit_option)
             subprocess.run(args_run)
             # p = subprocess.Popen(args_run)
             # processes.append(p)
