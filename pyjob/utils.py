@@ -64,11 +64,6 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
             if submit_option:
                 args_run.insert(1, submit_option)
             subprocess.run(args_run)
-            # p = subprocess.Popen(args_run)
-            # processes.append(p)
-    # for i, p in enumerate(processes):
-    #     print(i)
-    #     p.wait()
     print()
 
     if submit:
