@@ -99,9 +99,6 @@ If you want to load conda, you first need to add `conda_dir` to your configurati
 
 Once set you can add `conda activate {env_name}` to your template and update your configuration accordingly.
 
-
-`conda_dir` should be defined in `config/default_slurm.yml`, then at the top of your template you can add `conda activate {conda_env_name}` and either define the environment name in your configuration or directly in the template file.
-
 ## 6. Options
 `--no-sub`: print the list of jobs parameters without submitting the jobs.<br/>
 `--show`: print a template and configuration file without submitting the jobs.<br/>
