@@ -2,14 +2,21 @@
 
 Simple library to launch batched jobs and run grid-search over parameters seamlessly. It includes multiple schedulers such as `sge`, `slurm` and `oar`. Given lists of parameters, it computes a cartesian product based on [sklearn.model_selection.ParameterGrid](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ParameterGrid.html) and launch one job for each combination in the parameters grid.<br/>
 
+## 1. Install
 
-## 1. Run
+To install, run:
+```
+pip install git+https://github.com/rstrudel/pyjob.git@master#egg=pyjob
+```
+
+
+## 2. Run
 To test `pyjob`, you can directly run "Hello world" jobs with :
 ```
 python -m pyjob.launch example/hello.tpl example/hello.yml --scheduler slurm
 ```
 
-To try `pyjob` on your own experiments check Section 2, to check how the "Hello World" example was built check Section 3, to use conda environments check Section 4 and to use `pyjob` for distributed training, check Section 6. Once set up, with only one command you will be able to submit a set of jobs defined by a template:
+To try `pyjob` on your own experiments check Section 3, to check how the "Hello World" example was built check Section 4, to use conda environments check Section 5 and to use `pyjob` for distributed training, check Section 7. Once set up, with only one command you will be able to submit a set of jobs defined by a template:
 
 ```
 python train.py --learning-rate {lr} --weight-decay {weight_decay} --dropout {dropout}
@@ -17,7 +24,7 @@ python train.py --learning-rate {lr} --weight-decay {weight_decay} --dropout {dr
 
 Over a grid of learning rate, weight decay and dropout parameters defined in a configuration file.
 
-## 2. Create an experiment
+## 3. Create an experiment
 
 In the `template` folder, create a template file `experiment_name` with the command you want to run. Parameters defined with the configuration file should be put inside curly brackets \{\}.<br/>
 In the `config` folder, create a yaml configuration file `experiment_name.yml` containing the field of values of the variables between curly brackets.<br/>
@@ -31,15 +38,15 @@ python -m pyjob.launch experiment_name experiment_name.yml --scheduler slurm
 You can define a set of parameters that are global to all the experiments in `config/default_slurm.yml`, for example the jobs logging directory `job_log_dir`, the job queue `queue` or the conda envrionment you are using and so on. If one parameter is redefined in the user configuration file, then it overrides the default configuration.
 
 
-## 3. Example: Hello World
-Template `template/hello`:
+## 4. Example: Hello World
+Template `hello.tpl`:
 ```
 python -c "print('Hello {first_name} {last_name}')"
 ```
 The script requires `first_name` and `last_name` to be defined.
 
 
-Configuration `config/hello.yml`:
+Configuration `hello.yml`:
 ```
 job_name:
 - hello
@@ -85,7 +92,7 @@ You can check the scripts in ~/pyjob/scripts/hello_*.slurm
 You can check the logs in ~/pyjob/. A job output is stored as hello.o* and its errors as hello.e*.
 ```
 
-## 4. Anaconda
+## 5. Anaconda
 
 If you want to activate a conda environment before starting an experiment, you will need to add the following lines to `header/header.slurm` (choose the header corresponding to your scheduler):
 
@@ -97,12 +104,12 @@ export LD_LIBRARY_PATH={conda_dir}/envs/bin/lib:$LD_LIBRARY_PATH
 
 `conda_dir` should be defined in `config/default_slurm.yml`, then at the top of your template you can add `conda activate {conda_env_name}` and either define the environment name in your configuration or directly in the template file.
 
-## 5. Options
+## 6. Options
 `--no-sub`: print the list of jobs parameters without submitting the jobs.<br/>
 `--show`: print a template and configuration file without submitting the jobs.<br/>
 
 
-## 6. Distributed training
+## 7. Distributed training
 
 You may want to run distributed training over multiples nodes on a cluster. If you are using [PyTorch](https://pytorch.org/) distributed library, the distributed processes can be initialized using a file with:
 ```
