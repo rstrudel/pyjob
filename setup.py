@@ -20,5 +20,5 @@ setup(
     packages=find_packages(),
     install_requires=read_requirements_file("requirements.txt"),
     include_package_data=True,
-    package_data={"": ["header/*", "config/*yml", "template/*"]},
+    package_data={"": ["header/*", "config/*yml", "example/*"]},
 )
