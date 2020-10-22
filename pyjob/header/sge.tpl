@@ -1,5 +1,5 @@
-#$ -l mem_req=8G
-#$ -l h_vmem=10000G
+#$ -l mem_req={mem_req}
+#$ -l h_vmem={h_vmem}
 #$ -pe serial {n_gpus}
 #$ -q {queues}
 #$ -e {job_log_dir}

@@ -2,5 +2,9 @@ queues:
 - zeus.q,titan.q,gaia.q,chronos.q
 n_gpus:
 - 1
+mem_req:
+- 8G
+h_vmem:
+- 10000G
 job_log_dir:
 - "~/pyjob_logs/"
