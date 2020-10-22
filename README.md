@@ -6,7 +6,7 @@ Simple library to launch batched jobs and run grid-search over parameters seamle
 ## 1. Run
 To test `pyjob`, you can directly run "Hello world" jobs with :
 ```
-python -m pyjob.launch hello hello.yml --scheduler slurm
+python -m pyjob.launch example/hello.tpl example/hello.yml --scheduler slurm
 ```
 
 To try `pyjob` on your own experiments check Section 2, to check how the "Hello World" example was built check Section 3, to use conda environments check Section 4 and to use `pyjob` for distributed training, check Section 6. Once set up, with only one command you will be able to submit a set of jobs defined by a template:
