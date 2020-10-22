@@ -116,7 +116,7 @@ dist.init_process_group(
 ```
 `sync_file` is the same synchronization file for every node while `node_rank` defines the global rank of a node and `world_size` the total number of nodes. You can change your argparse/click script to add `dist_rank` and `world_size` as arguments and adapt the template and configuration file easily:
 
-Templatd `distributed.tpl`:
+Template `distributed.tpl`:
 ```
 python train.py --learning-rate {lr} --node-rank {node_rank} --world-size {world_size}
 ```
