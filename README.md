@@ -94,13 +94,11 @@ You can check the logs in ~/pyjob/. A job output is stored as hello.o* and its e
 
 ## 5. Anaconda
 
-If you want to activate a conda environment before starting an experiment, you will need to add the following lines to `header/header.slurm` (choose the header corresponding to your scheduler):
+If you want to load conda, you first need to add `conda_dir` to your configuration file.
+`conda_dir` can be defined globally, just create a file `slurm.yml` containing `conda_dir` and it will be used for every experiments using `slurm` scheduler.
 
-```
-# conda
-. {conda_dir}/etc/profile.d/conda.sh
-export LD_LIBRARY_PATH={conda_dir}/envs/bin/lib:$LD_LIBRARY_PATH
-```
+Once set you can add `conda activate {env_name}` to your template and update your configuration accordingly.
+
 
 `conda_dir` should be defined in `config/default_slurm.yml`, then at the top of your template you can add `conda activate {conda_env_name}` and either define the environment name in your configuration or directly in the template file.
 
