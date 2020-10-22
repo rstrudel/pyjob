@@ -7,29 +7,29 @@ from termcolor import colored
 
 from sklearn.model_selection import ParameterGrid
 
-BASE_DIR = Path(__file__).parent
+PACKAGE_DIR = Path(__file__).parent
 
 SCHEDULER_PARAMS = {
     "sge": {
-        "header": "header.pbs",
+        "header": "header/pbs.tpl",
         "extension": "pbs",
         "submit_command": "qsub",
         "submit_option": "",
-        "config": "default_sge.yml",
+        "config": "config/sge.yml",
     },
     "slurm": {
-        "header": "header.slurm",
+        "header": "header/slurm.tpl",
         "extension": "slurm",
         "submit_command": "sbatch",
         "submit_option": "",
-        "config": "default_slurm.yml",
+        "config": "config/slurm.yml",
     },
     "oar": {
-        "header": "header.oar",
+        "header": "header/oar.tpl",
         "extension": "oar",
         "submit_command": "oarsub",
         "submit_option": "--scanscript",
-        "config": "default_oar.yml",
+        "config": "config/oar.yml",
     },
 }
 
@@ -78,9 +78,8 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
         print("No jobs launched!")
 
 
-def create_template(scheduler_infos, template):
-    header_file = BASE_DIR / "header" / scheduler_infos["header"]
-    template_file = BASE_DIR / "template" / template
+def create_template(scheduler_infos, template_file):
+    header_file = PACKAGE_DIR / scheduler_infos["header"]
 
     template = ""
     with open(header_file, "r") as f:
@@ -106,9 +105,9 @@ def expand_config(config):
     return config
 
 
-def load_config(schduler_infos, config_file):
-    default_config_file = BASE_DIR / "config" / schduler_infos["config"]
-    user_config_file = BASE_DIR / "config" / config_file
+def load_config(schduler_infos, user_config_file):
+    default_config_file = PACKAGE_DIR / schduler_infos["config"]
+    user_config_file = PACKAGE_DIR / config_file
     with open(default_config_file) as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     with open(user_config_file) as f:

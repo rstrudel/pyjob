@@ -4,3 +4,5 @@ n_gpus:
 - 1
 job_log_dir:
 - "~/pyjob/"
+conda_dir:
+- "/sequoia/data1/rstrudel/miniconda3"
