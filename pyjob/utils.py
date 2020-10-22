@@ -12,7 +12,7 @@ PACKAGE_DIR = Path(__file__).parent
 
 SCHEDULER_PARAMS = {
     "sge": {
-        "header": "header/pbs.tpl",
+        "header": "header/sge.tpl",
         "extension": "pbs",
         "submit_command": "qsub",
         "submit_option": "",
