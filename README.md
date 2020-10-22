@@ -16,7 +16,7 @@ To test `pyjob`, you can directly run "Hello world" jobs with :
 python -m pyjob.launch example/hello.tpl example/hello.yml --scheduler slurm
 ```
 
-To try `pyjob` on your own experiments check Section 3, to check how the "Hello World" example was built check Section 4, to use conda environments check Section 5 and to use `pyjob` for distributed training, check Section 7. Once set up, with only one command you will be able to submit a set of jobs defined by a template:
+To try `pyjob` on your own experiments check Section 3, to use Anaconda environments read Section 4, to check how the "Hello World" example was built check Section 5, and to use `pyjob` for distributed training, check Section 7. Once set up, with only one command you will be able to submit a set of jobs defined by a template:
 
 ```
 python train.py --learning-rate {lr} --weight-decay {weight_decay} --dropout {dropout}
@@ -26,19 +26,25 @@ Over a grid of learning rate, weight decay and dropout parameters defined in a c
 
 ## 3. Create an experiment
 
-In the `template` folder, create a template file `experiment_name` with the command you want to run. Parameters defined with the configuration file should be put inside curly brackets \{\}.<br/>
-In the `config` folder, create a yaml configuration file `experiment_name.yml` containing the field of values of the variables between curly brackets.<br/>
+Create a template file `experiment.tpl` with the command you want to run. Parameters defined using the configuration file should be put inside curly brackets \{\}.<br/>
+Create a yaml configuration file `experiment_name.yml` containing the field of values of the variables between curly brackets.<br/>
 
 Run:
 
 ```
-python -m pyjob.launch experiment_name experiment_name.yml --scheduler slurm
+python -m pyjob.launch experiment.tpl experiment.yml --scheduler slurm
 ```
 
-You can define a set of parameters that are global to all the experiments in `config/default_slurm.yml`, for example the jobs logging directory `job_log_dir`, the job queue `queue` or the conda envrionment you are using and so on. If one parameter is redefined in the user configuration file, then it overrides the default configuration.
+You can define a set of parameters that are global to all the experiments in `slurm.yml`, for example the jobs logging directory `job_log_dir`, the job queue `queue` or the conda environment `conda_dir` you are using and so on. If one parameter is redefined in the user configuration file, then it overrides the default configuration.
 
 
-## 4. Example: Hello World
+## 4. Anaconda
+
+If you want to load conda, you first need to add `conda_dir` to your experiment configuration or to the scheduler configuration.
+
+Once set you can add `conda activate {env_name}` to your template and update your configuration accordingly.
+
+## 5. Example: Hello World
 Template `hello.tpl`:
 ```
 python -c "print('Hello {first_name} {last_name}')"
@@ -91,13 +97,6 @@ Submitted batch job 555792
 You can check the scripts in ~/pyjob/scripts/hello_*.slurm
 You can check the logs in ~/pyjob/. A job output is stored as hello.o* and its errors as hello.e*.
 ```
-
-## 5. Anaconda
-
-If you want to load conda, you first need to add `conda_dir` to your configuration file.
-`conda_dir` can be defined globally, just create a file `slurm.yml` containing `conda_dir` and it will be used for every experiments using `slurm` scheduler.
-
-Once set you can add `conda activate {env_name}` to your template and update your configuration accordingly.
 
 ## 6. Options
 `--no-sub`: print the list of jobs parameters without submitting the jobs.<br/>
