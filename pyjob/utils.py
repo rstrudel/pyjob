@@ -123,9 +123,10 @@ def load_config(scheduler_infos, config_file):
             sched_user_config = yaml.load(f, Loader=yaml.FullLoader)
     with open(user_config_file) as f:
         user_config = yaml.load(f, Loader=yaml.FullLoader)
-    sched_config.update(sched_user_config)
-    sched_config.update(user_config)
-    config = expand_config(sched_config)
+    config = sched_config.copy()
+    config.update(sched_user_config)
+    config.update(user_config)
+    config = expand_config(config)
 
     required_args = ["job_log_dir", "job_name"]
     for arg in required_args:
