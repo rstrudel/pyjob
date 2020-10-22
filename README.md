@@ -4,7 +4,7 @@ Simple library to launch batched jobs and run grid-search over parameters seamle
 
 ## 1. Install
 
-To install, run:
+To install `pyjob`, run:
 ```
 pip install git+https://github.com/rstrudel/pyjob.git@master#egg=pyjob
 ```
