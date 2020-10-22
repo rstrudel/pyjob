@@ -7,6 +7,7 @@ from termcolor import colored
 
 from sklearn.model_selection import ParameterGrid
 
+WORKING_DIR = Path().cwd()
 PACKAGE_DIR = Path(__file__).parent
 
 SCHEDULER_PARAMS = {
@@ -80,6 +81,7 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
 
 def create_template(scheduler_infos, template_file):
     header_file = PACKAGE_DIR / scheduler_infos["header"]
+    template_file = user_to_abs_path(template_file)
 
     template = ""
     with open(header_file, "r") as f:
@@ -105,9 +107,10 @@ def expand_config(config):
     return config
 
 
-def load_config(schduler_infos, user_config_file):
+def load_config(schduler_infos, config_file):
     default_config_file = PACKAGE_DIR / schduler_infos["config"]
-    user_config_file = PACKAGE_DIR / config_file
+    user_config_file = user_to_abs_path(config_file)
+
     with open(default_config_file) as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     with open(user_config_file) as f:
@@ -152,6 +155,18 @@ def show_submission(template, args, config):
     print(f"{args}\n")
     print_color("Config:", color)
     print_dict(config)
+
+def user_to_abs_path(path):
+    cwd_path = WORKING_DIR / filename
+    pkg_path = PACKAGE_DIR / "example" / filename
+    if cwd_path.exists():
+        abs_path = cwd_path
+    elif pkg_user_cfg_file.exists():
+        abs_path = pkg_path
+    else:
+        raise ValueError(f"File {cwd_path} not found.")
+
+    return abs_path
 
 
 def print_dict(d):
