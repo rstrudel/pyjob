@@ -17,12 +17,12 @@ from pyjob.utils import (
 )
 
 
-def setup_experiment(scheduler, template_file, config_file):
+def setup_experiment(scheduler, template_file, config_file, directory):
     # load template and config
     scheduler_infos = SCHEDULER_PARAMS[scheduler]
-    config = load_config(scheduler_infos, config_file)
+    config = load_config(scheduler_infos, config_file, directory)
     load_conda = "conda_dir" in config
-    template = create_template(scheduler_infos, template_file, load_conda)
+    template = create_template(scheduler_infos, template_file, directory, load_conda)
     template_args = parse_template(template)
 
     return scheduler_infos, template, template_args, config
@@ -34,14 +34,15 @@ def setup_experiment(scheduler, template_file, config_file):
 @click.option("--scheduler", "-sched", required=True, type=str)
 @click.option("--show/--no-show", default=False)
 @click.option("--sub/--no-sub", default=True)
-def main(template_file, config_file, scheduler, show, sub):
+@click.option("--directory", "-dir", default="", type=str)
+def main(template_file, config_file, scheduler, show, sub, directory):
     if scheduler not in SCHEDULER_PARAMS.keys():
         raise ValueError(
             f"{scheduler} is an unknown scheduler. Supported schedulers: {SCHEDULER_PARAMS.keys()}"
         )
 
     scheduler_infos, template, template_args, config = setup_experiment(
-        scheduler, template_file, config_file
+        scheduler, template_file, config_file, directory
     )
 
     # show experiments and run

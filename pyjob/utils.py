@@ -79,10 +79,10 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
         print("No jobs launched!")
 
 
-def create_template(scheduler_infos, template_file, load_conda):
+def create_template(scheduler_infos, template_file, directory, load_conda):
     header_file = PACKAGE_DIR / scheduler_infos["header"]
     conda_file = PACKAGE_DIR / "header/conda.tpl"
-    template_file = user_to_abs_path(template_file)
+    template_file = user_to_abs_path(template_file, directory)
 
     template = ""
     with open(header_file, "r") as f:
@@ -111,10 +111,10 @@ def expand_config(config):
     return config
 
 
-def load_config(scheduler_infos, config_file):
+def load_config(scheduler_infos, config_file, directory):
     sched_default_config_file = PACKAGE_DIR / "config" / scheduler_infos["config"]
-    sched_user_config_file = WORKING_DIR / scheduler_infos["config"]
-    user_config_file = user_to_abs_path(config_file)
+    sched_user_config_file = user_to_abs_path(scheduler_infos["config"], directory)
+    user_config_file = user_to_abs_path(config_file, directory)
 
     with open(sched_default_config_file) as f:
         sched_config = yaml.load(f, Loader=yaml.FullLoader)
@@ -167,8 +167,8 @@ def show_submission(template, args, config):
     print_dict(config)
 
 
-def user_to_abs_path(path):
-    path = Path(path)
+def user_to_abs_path(path, directory):
+    path = Path(directory) / Path(path)
     cwd_path = WORKING_DIR / path
     pkg_path = PACKAGE_DIR / path
     if path.exists():
