@@ -179,7 +179,8 @@ def user_to_abs_path(path):
         abs_path = pkg_path
     else:
         raise ValueError(
-            f"File {path} not found as absolute path, relative ({WORKING_DIR}) and or in the package ({PACKAGE_DIR}) ."
+            f"File not found as absolute path ({path}), relative ({cwd_path}) \
+            or in the package ({pkg_path}) ."
         )
 
     return abs_path
