@@ -81,7 +81,7 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
 
 def create_template(scheduler_infos, template_file, load_conda):
     header_file = PACKAGE_DIR / scheduler_infos["header"]
-    conda_file = PACKAGE_DIR / "conda.tpl"
+    conda_file = PACKAGE_DIR / "header/conda.tpl"
     template_file = user_to_abs_path(template_file)
 
     template = ""
