@@ -14,8 +14,11 @@ def read_requirements_file(filename):
 
 
 setup(
-    name='pyjob',
-    version='0.0.1',
-    description='Generate jobs from template files easily',
+    name="pyjob",
+    version="0.0.1",
+    description="enerate jobs from template files easily",
     packages=find_packages(),
-    install_requires=read_requirements_file('requirements.txt'))
+    install_requires=read_requirements_file("requirements.txt"),
+    include_package_data=True,
+    package_data={"": ["header/", "config/*yml", "template/"]},
+)
