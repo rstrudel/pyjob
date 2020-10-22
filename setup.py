@@ -15,8 +15,8 @@ def read_requirements_file(filename):
 
 setup(
     name="pyjob",
-    version="0.0.1",
-    description="enerate jobs from template files easily",
+    version="0.2",
+    description="Generate jobs from template files easily",
     packages=find_packages(),
     install_requires=read_requirements_file("requirements.txt"),
     include_package_data=True,
