@@ -89,7 +89,7 @@ def create_template(scheduler_infos, template_file, load_conda):
         template = f.read()
     if load_conda:
         with open(conda_file, "r") as f:
-            template += f.read()
+            template += "\n" + f.read()
     with open(template_file, "r") as f:
         template += "\n\n# EXPERIMENT\n" + f.read()
     return template
