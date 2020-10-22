@@ -168,14 +168,19 @@ def show_submission(template, args, config):
 
 
 def user_to_abs_path(path):
+    path = Path(path)
     cwd_path = WORKING_DIR / path
     pkg_path = PACKAGE_DIR / path
-    if cwd_path.exists():
+    if path.exists():
+        abs_path = path
+    elif cwd_path.exists():
         abs_path = cwd_path
     elif pkg_path.exists():
         abs_path = pkg_path
     else:
-        raise ValueError(f"File {path} not found in {WORKING_DIR} and {PACKAGE_DIR}.")
+        raise ValueError(
+            f"File {path} not found as absolute path, relative ({WORKING_DIR}) and or in the package ({PACKAGE_DIR}) ."
+        )
 
     return abs_path
 
