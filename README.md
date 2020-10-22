@@ -65,7 +65,7 @@ last_name:
 ```
 The configuration file defines the set of values taken by `first_name` and `last_name`.
 
-By running `python -m pyjob.launch hello hello.yml --scheduler slurm`, you should get an output similar to this one:
+By running `python -m pyjob.launch example/hello.tpl example/hello.yml --scheduler slurm`, you should get an output similar to this one:
 ```
 Fixed parameters:
 queue: gpu_p1
