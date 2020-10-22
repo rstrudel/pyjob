@@ -16,21 +16,21 @@ SCHEDULER_PARAMS = {
         "extension": "pbs",
         "submit_command": "qsub",
         "submit_option": "",
-        "config": "config/sge.yml",
+        "config": "sge.yml",
     },
     "slurm": {
         "header": "header/slurm.tpl",
         "extension": "slurm",
         "submit_command": "sbatch",
         "submit_option": "",
-        "config": "config/slurm.yml",
+        "config": "slurm.yml",
     },
     "oar": {
         "header": "header/oar.tpl",
         "extension": "oar",
         "submit_command": "oarsub",
         "submit_option": "--scanscript",
-        "config": "config/oar.yml",
+        "config": "oar.yml",
     },
 }
 
@@ -111,16 +111,21 @@ def expand_config(config):
     return config
 
 
-def load_config(schduler_infos, config_file):
-    default_config_file = PACKAGE_DIR / schduler_infos["config"]
+def load_config(scheduler_infos, config_file):
+    sched_default_config_file = PACKAGE_DIR / "config" / scheduler_infos["config"]
+    sched_user_config_file = WORKING_DIR / scheduler_infos["config"]
     user_config_file = user_to_abs_path(config_file)
 
-    with open(default_config_file) as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
+    with open(sched_default_config_file) as f:
+        sched_config = yaml.load(f, Loader=yaml.FullLoader)
+    if sched_user_config_file.exists():
+        with open(sched_user_config_file) as f:
+            sched_user_config = yaml.load(f, Loader=yaml.FullLoader)
     with open(user_config_file) as f:
         user_config = yaml.load(f, Loader=yaml.FullLoader)
-    config.update(user_config)
-    config = expand_config(config)
+    sched_config.update(sched_user_config)
+    sched_config.update(user_config)
+    config = expand_config(sched_config)
 
     required_args = ["job_log_dir", "job_name"]
     for arg in required_args:
