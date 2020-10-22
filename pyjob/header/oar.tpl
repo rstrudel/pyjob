@@ -10,7 +10,3 @@
 
 # Set GPU visible
 source gpu_setVisibleDevices.sh
-
-# conda
-export LC_ALL=C.UTF-8
-export LANG=C.UTF-8
