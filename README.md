@@ -26,7 +26,7 @@ Over a grid of learning rate, weight decay and dropout parameters defined in a c
 
 ## 3. Create an experiment
 
-Create a template file `experiment.tpl` with the command you want to run. Parameters defined using the configuration file should be put inside curly brackets \{\}.<br/>
+Create a template file `experiment.tpl` with the command you want to run. Parameters defined using the configuration file should be put inside curly brackets `{}`.<br/>
 Create a yaml configuration file `experiment_name.yml` containing the field of values of the variables between curly brackets.<br/>
 
 Run:
@@ -35,7 +35,7 @@ Run:
 python -m pyjob.launch experiment.tpl experiment.yml --scheduler slurm
 ```
 
-You can define a set of parameters that are global to all the experiments in `slurm.yml`, for example the jobs logging directory `job_log_dir`, the job queue `queue` or the conda environment `conda_dir` you are using and so on. If one parameter is redefined in the user configuration file, then it overrides the default configuration.
+You can define a set of parameters that are global to all the experiments in `slurm.yml`. For example the jobs logging directory `job_log_dir`, the job queue `queue` or the conda environment `conda_dir` you are using and so on. If one parameter is redefined by the user configuration, then it overrides the default configuration.
 
 
 ## 4. Anaconda
