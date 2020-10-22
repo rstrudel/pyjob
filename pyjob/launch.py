@@ -20,9 +20,10 @@ from pyjob.utils import (
 def setup_experiment(scheduler, template_file, config_file):
     # load template and config
     scheduler_infos = SCHEDULER_PARAMS[scheduler]
-    template = create_template(scheduler_infos, template_file)
-    template_args = parse_template(template)
     config = load_config(scheduler_infos, config_file)
+    load_conda = "conda_dir" in config[0]
+    template = create_template(scheduler_infos, template_file, load_conda)
+    template_args = parse_template(template)
 
     return scheduler_infos, template, template_args, config
 

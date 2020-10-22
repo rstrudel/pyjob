@@ -79,13 +79,17 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
         print("No jobs launched!")
 
 
-def create_template(scheduler_infos, template_file):
+def create_template(scheduler_infos, template_file, load_conda):
     header_file = PACKAGE_DIR / scheduler_infos["header"]
+    conda_file = PACKAGE_DIR / "conda.tpl"
     template_file = user_to_abs_path(template_file)
 
     template = ""
     with open(header_file, "r") as f:
         template = f.read()
+    if load_conda:
+        with open(conda_file, "r") as f:
+            template += f.read()
     with open(template_file, "r") as f:
         template += "\n\n# EXPERIMENT\n" + f.read()
     return template
