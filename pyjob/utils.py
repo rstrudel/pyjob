@@ -161,7 +161,7 @@ def user_to_abs_path(path):
     pkg_path = PACKAGE_DIR / "example" / path
     if cwd_path.exists():
         abs_path = cwd_path
-    elif pkg_user_cfg_file.exists():
+    elif pkg_path.exists():
         abs_path = pkg_path
     else:
         raise ValueError(f"File {cwd_path} not found.")
