@@ -56,6 +56,7 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
         template_content = template.format(**dict_args)
         with open(template_file, "w") as f:
             f.write(template_content)
+        os.chmod(template_file, 0o755)
         print_color(i, COLORS["t2"])
         print_dict({k: dict_args[k] for k in multi_keys})
         processes = []
