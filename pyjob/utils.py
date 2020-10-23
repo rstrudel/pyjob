@@ -174,9 +174,12 @@ def show_submission(template, args, config):
 
 
 def user_to_abs_path(path, directory, required=False):
-    path = Path(directory) / Path(path)
-    cwd_path = WORKING_DIR / path
-    pkg_path = PACKAGE_DIR / path
+    directory = Path(directory)
+    path = Path(path)
+
+    path = directory / path
+    cwd_path = WORKING_DIR / directory / path
+    pkg_path = PACKAGE_DIR / directory / path
     if path.exists():
         abs_path = path
     elif cwd_path.exists():
