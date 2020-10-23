@@ -7,29 +7,30 @@ from termcolor import colored
 
 from sklearn.model_selection import ParameterGrid
 
-BASE_DIR = Path(__file__).parent
+WORKING_DIR = Path().cwd()
+PACKAGE_DIR = Path(__file__).parent
 
 SCHEDULER_PARAMS = {
     "sge": {
-        "header": "header.pbs",
+        "header": "header/sge.tpl",
         "extension": "pbs",
         "submit_command": "qsub",
         "submit_option": "",
-        "config": "default_sge.yml",
+        "config": "sge.yml",
     },
     "slurm": {
-        "header": "header.slurm",
+        "header": "header/slurm.tpl",
         "extension": "slurm",
         "submit_command": "sbatch",
         "submit_option": "",
-        "config": "default_slurm.yml",
+        "config": "slurm.yml",
     },
     "oar": {
-        "header": "header.oar",
+        "header": "header/oar.tpl",
         "extension": "oar",
         "submit_command": "oarsub",
         "submit_option": "--scanscript",
-        "config": "default_oar.yml",
+        "config": "oar.yml",
     },
 }
 
@@ -55,6 +56,7 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
         template_content = template.format(**dict_args)
         with open(template_file, "w") as f:
             f.write(template_content)
+        os.chmod(template_file, 0o755)
         print_color(i, COLORS["t2"])
         print_dict({k: dict_args[k] for k in multi_keys})
         processes = []
@@ -78,15 +80,22 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
         print("No jobs launched!")
 
 
-def create_template(scheduler_infos, template):
-    header_file = BASE_DIR / "header" / scheduler_infos["header"]
-    template_file = BASE_DIR / "template" / template
+def create_template(scheduler_infos, template_file, directory, load_conda):
+    header_file = PACKAGE_DIR / scheduler_infos["header"]
+    mt_file = PACKAGE_DIR / "header/multithreading.tpl"
+    conda_file = PACKAGE_DIR / "header/conda.tpl"
+    template_file = user_to_abs_path(template_file, directory, required=True)
 
     template = ""
     with open(header_file, "r") as f:
-        template = f.read()
+        template = f.read() + "\n"
+    with open(mt_file, "r") as f:
+        template += f.read() + "\n"
+    if load_conda:
+        with open(conda_file, "r") as f:
+            template += f.read() + "\n"
     with open(template_file, "r") as f:
-        template += "\n\n# EXPERIMENT\n" + f.read()
+        template += "\n# EXPERIMENT\n" + f.read()
     return template
 
 
@@ -106,13 +115,22 @@ def expand_config(config):
     return config
 
 
-def load_config(schduler_infos, config_file):
-    default_config_file = BASE_DIR / "config" / schduler_infos["config"]
-    user_config_file = BASE_DIR / "config" / config_file
-    with open(default_config_file) as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
+def load_config(scheduler_infos, config_file, directory):
+    sched_default_config_file = PACKAGE_DIR / "config" / scheduler_infos["config"]
+    sched_user_config_file = user_to_abs_path(scheduler_infos["config"], directory)
+    user_config_file = user_to_abs_path(config_file, directory, required=True)
+
+    with open(sched_default_config_file) as f:
+        sched_config = yaml.load(f, Loader=yaml.FullLoader)
+    if sched_user_config_file.exists():
+        with open(sched_user_config_file) as f:
+            sched_user_config = yaml.load(f, Loader=yaml.FullLoader)
     with open(user_config_file) as f:
         user_config = yaml.load(f, Loader=yaml.FullLoader)
+
+    config = sched_config.copy()
+    if sched_user_config_file.exists():
+        config.update(sched_user_config)
     config.update(user_config)
     config = expand_config(config)
 
@@ -153,6 +171,30 @@ def show_submission(template, args, config):
     print(f"{args}\n")
     print_color("Config:", color)
     print_dict(config)
+
+
+def user_to_abs_path(path, directory, required=False):
+    path = Path(directory) / Path(path)
+    cwd_path = WORKING_DIR / path
+    pkg_path = PACKAGE_DIR / path
+    if path.exists():
+        abs_path = path
+    elif cwd_path.exists():
+        abs_path = cwd_path
+    elif pkg_path.exists():
+        abs_path = pkg_path
+    else:
+        if required:
+            raise ValueError(
+                f"""
+                File not found as absolute path ({path}), relative ({cwd_path})
+                or in the package ({pkg_path}) .
+                """
+            )
+        else:
+            abs_path = path
+
+    return abs_path
 
 
 def print_dict(d):

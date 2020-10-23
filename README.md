@@ -2,14 +2,21 @@
 
 Simple library to launch batched jobs and run grid-search over parameters seamlessly. It includes multiple schedulers such as `sge`, `slurm` and `oar`. Given lists of parameters, it computes a cartesian product based on [sklearn.model_selection.ParameterGrid](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ParameterGrid.html) and launch one job for each combination in the parameters grid.<br/>
 
+## 1. Install
 
-## 1. Run
+To install `pyjob`, run:
+```
+pip install git+https://github.com/rstrudel/pyjob.git@master#egg=pyjob
+```
+
+
+## 2. Run
 To test `pyjob`, you can directly run "Hello world" jobs with :
 ```
-python -m pyjob.launch hello hello.yml --scheduler slurm
+python -m pyjob.launch example/hello.tpl example/hello.yml --scheduler slurm
 ```
 
-To try `pyjob` on your own experiments check Section 2, to check how the "Hello World" example was built check Section 3, to use conda environments check Section 4 and to use `pyjob` for distributed training, check Section 6. Once set up, with only one command you will be able to submit a set of jobs defined by a template:
+To try `pyjob` on your own experiments check Section 3, to use Anaconda environments read Section 4, to check how the "Hello World" example was built check Section 5, and to use `pyjob` for distributed training, check Section 7. Once set up, with only one command you will be able to submit a set of jobs defined by a template:
 
 ```
 python train.py --learning-rate {lr} --weight-decay {weight_decay} --dropout {dropout}
@@ -17,29 +24,35 @@ python train.py --learning-rate {lr} --weight-decay {weight_decay} --dropout {dr
 
 Over a grid of learning rate, weight decay and dropout parameters defined in a configuration file.
 
-## 2. Create an experiment
+## 3. Create an experiment
 
-In the `template` folder, create a template file `experiment_name` with the command you want to run. Parameters defined with the configuration file should be put inside curly brackets \{\}.<br/>
-In the `config` folder, create a yaml configuration file `experiment_name.yml` containing the field of values of the variables between curly brackets.<br/>
+Create a template file `experiment.tpl` with the command you want to run. Parameters defined using the configuration file should be put inside curly brackets `{}`.<br/>
+Create a yaml configuration file `experiment_name.yml` containing the field of values of the variables between curly brackets.<br/>
 
 Run:
 
 ```
-python -m pyjob.launch experiment_name experiment_name.yml --scheduler slurm
+python -m pyjob.launch experiment.tpl experiment.yml --scheduler slurm
 ```
 
-You can define a set of parameters that are global to all the experiments in `config/default_slurm.yml`, for example the jobs logging directory `job_log_dir`, the job queue `queue` or the conda envrionment you are using and so on. If one parameter is redefined in the user configuration file, then it overrides the default configuration.
+You can define a set of parameters that are global to all the experiments in `slurm.yml`. For example the jobs logging directory `job_log_dir`, the job queue `queue` or the conda environment `conda_dir` you are using and so on. If one parameter is redefined by the user configuration, then it overrides the default configuration.
 
 
-## 3. Example: Hello World
-Template `template/hello`:
+## 4. Anaconda
+
+If you want to load conda, you first need to add `conda_dir` to your experiment configuration or to the scheduler configuration.
+
+Once set you can add `conda activate {env_name}` to your template and update your configuration accordingly.
+
+## 5. Example: Hello World
+Template `hello.tpl`:
 ```
 python -c "print('Hello {first_name} {last_name}')"
 ```
 The script requires `first_name` and `last_name` to be defined.
 
 
-Configuration `config/hello.yml`:
+Configuration `hello.yml`:
 ```
 job_name:
 - hello
@@ -52,7 +65,7 @@ last_name:
 ```
 The configuration file defines the set of values taken by `first_name` and `last_name`.
 
-By running `python -m pyjob.launch hello hello.yml --scheduler slurm`, you should get an output similar to this one:
+By running `python -m pyjob.launch example/hello.tpl example/hello.yml --scheduler slurm`, you should get an output similar to this one:
 ```
 Fixed parameters:
 queue: gpu_p1
@@ -85,24 +98,12 @@ You can check the scripts in ~/pyjob/scripts/hello_*.slurm
 You can check the logs in ~/pyjob/. A job output is stored as hello.o* and its errors as hello.e*.
 ```
 
-## 4. Anaconda
-
-If you want to activate a conda environment before starting an experiment, you will need to add the following lines to `header/header.slurm` (choose the header corresponding to your scheduler):
-
-```
-# conda
-. {conda_dir}/etc/profile.d/conda.sh
-export LD_LIBRARY_PATH={conda_dir}/envs/bin/lib:$LD_LIBRARY_PATH
-```
-
-`conda_dir` should be defined in `config/default_slurm.yml`, then at the top of your template you can add `conda activate {conda_env_name}` and either define the environment name in your configuration or directly in the template file.
-
-## 5. Options
+## 6. Options
 `--no-sub`: print the list of jobs parameters without submitting the jobs.<br/>
 `--show`: print a template and configuration file without submitting the jobs.<br/>
 
 
-## 6. Distributed training
+## 7. Distributed training
 
 You may want to run distributed training over multiples nodes on a cluster. If you are using [PyTorch](https://pytorch.org/) distributed library, the distributed processes can be initialized using a file with:
 ```
@@ -115,12 +116,12 @@ dist.init_process_group(
 ```
 `sync_file` is the same synchronization file for every node while `node_rank` defines the global rank of a node and `world_size` the total number of nodes. You can change your argparse/click script to add `dist_rank` and `world_size` as arguments and adapt the template and configuration file easily:
 
-Template `template/distributed`:
+Template `distributed.tpl`:
 ```
 python train.py --learning-rate {lr} --node-rank {node_rank} --world-size {world_size}
 ```
 
-Configuration `config/distributed.yml`:
+Configuration `distributed.yml`:
 ```
 lr:
 - 0.001
