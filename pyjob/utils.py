@@ -82,17 +82,20 @@ def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
 
 def create_template(scheduler_infos, template_file, directory, load_conda):
     header_file = PACKAGE_DIR / scheduler_infos["header"]
+    mt_file = PACKAGE_DIR / "header/multithreading.tpl"
     conda_file = PACKAGE_DIR / "header/conda.tpl"
-    template_file = user_to_abs_path(template_file, directory)
+    template_file = user_to_abs_path(template_file, directory, required=True)
 
     template = ""
     with open(header_file, "r") as f:
-        template = f.read()
+        template = f.read() + "\n"
+    with open(mt_file, "r") as f:
+        template += f.read() + "\n"
     if load_conda:
         with open(conda_file, "r") as f:
-            template += "\n" + f.read()
+            template += f.read() + "\n"
     with open(template_file, "r") as f:
-        template += "\n\n# EXPERIMENT\n" + f.read()
+        template += "\n# EXPERIMENT\n" + f.read()
     return template
 
 
@@ -115,7 +118,7 @@ def expand_config(config):
 def load_config(scheduler_infos, config_file, directory):
     sched_default_config_file = PACKAGE_DIR / "config" / scheduler_infos["config"]
     sched_user_config_file = user_to_abs_path(scheduler_infos["config"], directory)
-    user_config_file = user_to_abs_path(config_file, directory)
+    user_config_file = user_to_abs_path(config_file, directory, required=True)
 
     with open(sched_default_config_file) as f:
         sched_config = yaml.load(f, Loader=yaml.FullLoader)
@@ -124,8 +127,10 @@ def load_config(scheduler_infos, config_file, directory):
             sched_user_config = yaml.load(f, Loader=yaml.FullLoader)
     with open(user_config_file) as f:
         user_config = yaml.load(f, Loader=yaml.FullLoader)
+
     config = sched_config.copy()
-    config.update(sched_user_config)
+    if sched_user_config_file.exists():
+        config.update(sched_user_config)
     config.update(user_config)
     config = expand_config(config)
 
@@ -168,7 +173,7 @@ def show_submission(template, args, config):
     print_dict(config)
 
 
-def user_to_abs_path(path, directory):
+def user_to_abs_path(path, directory, required=False):
     path = Path(directory) / Path(path)
     cwd_path = WORKING_DIR / path
     pkg_path = PACKAGE_DIR / path
@@ -179,12 +184,15 @@ def user_to_abs_path(path, directory):
     elif pkg_path.exists():
         abs_path = pkg_path
     else:
-        raise ValueError(
-            f"""
-            File not found as absolute path ({path}), relative ({cwd_path})
-            or in the package ({pkg_path}) .
-            """
-        )
+        if required:
+            raise ValueError(
+                f"""
+                File not found as absolute path ({path}), relative ({cwd_path})
+                or in the package ({pkg_path}) .
+                """
+            )
+        else:
+            abs_path = path
 
     return abs_path
 
