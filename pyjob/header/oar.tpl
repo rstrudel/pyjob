@@ -6,7 +6,6 @@
 #OAR -l walltime={walltime}
 #OAR --stdout {job_log_dir}/{job_name}.out
 #OAR --stderr {job_log_dir}/{job_name}.err
-#OAR -p host!='gpuhost10'
 
 # Set GPU visible
 source gpu_setVisibleDevices.sh
