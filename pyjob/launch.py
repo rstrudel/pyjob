@@ -36,8 +36,9 @@ def setup_experiment(scheduler, template_file, config_file, directory):
 @click.option("--directory", "-dir", default="", type=str)
 def main(template_file, config_file, scheduler, show, sub, directory):
     if scheduler not in SCHEDULER_PARAMS.keys():
+        scheds_str = ", ".join(SCHEDULER_PARAMS.keys())
         raise ValueError(
-            f"{scheduler} is an unknown scheduler. Supported schedulers: {SCHEDULER_PARAMS.keys()}"
+            f"Unknown scheduler: {scheduler}. The supported schedulers are {scheds_str}"
         )
 
     scheduler_infos, template, template_args, config = setup_experiment(
