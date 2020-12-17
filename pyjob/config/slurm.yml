@@ -1,10 +1,12 @@
 queue:
-- gpu_p1
+- v100-16g
 qos:
 - qos_gpu-t3
-n_gpus:
+nodes:
 - 1
-n_cpus:
+gpus_per_node:
+- 1
+cpus_per_gpu:
 - 10
 time:
 - "20:00:00"
