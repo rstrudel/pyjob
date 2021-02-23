@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name={job_name}
 
-#SBATCH -C {queue}
+{queue}
 #SBATCH --qos={qos}
 
 #SBATCH --nodes={nodes}
