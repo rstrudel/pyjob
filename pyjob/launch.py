@@ -23,6 +23,7 @@ def setup_experiment(scheduler, template_file, config_file, directory):
     load_conda = "conda_dir" in config
     template = create_template(scheduler_infos, template_file, directory, load_conda)
     template_args = parse_template(template)
+    template_args.append("job_log_dir")
 
     return scheduler_infos, template, template_args, config
 
