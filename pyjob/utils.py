@@ -155,6 +155,9 @@ def args_from_config(template_args, config):
     config = {k: v for k, v in config.items() if k not in unused_config_args}
 
     list_dict_args = list(ParameterGrid(config))
+    for i, kwargs in enumerate(list_dict_args):
+        if "exp_name" in kwargs:
+            list_dict_args[i]["exp_name"] = kwargs["exp_name"].format(**kwargs)
     for arg in template_args:
         if arg not in list_dict_args[0]:
             raise ValueError(
