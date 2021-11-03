@@ -155,10 +155,16 @@ def args_from_config(template_args, config):
     config = {k: v for k, v in config.items() if k not in unused_config_args}
 
     list_dict_args = list(ParameterGrid(config))
+    # this feature is prone to user defined bugs
+    # e.g. definition of infinite loops
     for i, kwargs in enumerate(list_dict_args):
         for k, v in kwargs.items():
-            if isinstance(v, str) and "{" in v:
-                list_dict_args[i][k] = v.format(**kwargs)
+            if isinstance(v, str):
+                while "{" in v:
+                    if k in v:
+                        raise ValueError(f"{k}: auto-referencement in the config file.")
+                    v = v.format(**kwargs)
+                list_dict_args[i][k] = v
     for arg in template_args:
         if "*" not in arg and arg not in list_dict_args[0]:
             raise ValueError(
