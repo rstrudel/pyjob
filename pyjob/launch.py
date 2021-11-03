@@ -21,6 +21,8 @@ def setup_experiment(scheduler, template_file, config_file, directory):
     scheduler_infos = SCHEDULER_PARAMS[scheduler]
     config = load_config(scheduler_infos, config_file, directory)
     load_conda = "conda_dir" in config
+    if load_conda:
+        config["conda_dir"][0] = os.path.expandvars(config["conda_dir"][0])
     template = create_template(scheduler_infos, template_file, directory, load_conda)
     template_args = parse_template(template)
     template_args.append("job_log_dir")
@@ -31,7 +33,7 @@ def setup_experiment(scheduler, template_file, config_file, directory):
 @click.command()
 @click.argument("template-file", type=str)
 @click.argument("config-file", type=str)
-@click.option("--scheduler", "-sched", required=True, type=str)
+@click.option("--scheduler", "-sched", default="slurm", type=str)
 @click.option("--show/--no-show", default=False)
 @click.option("--sub/--no-sub", default=True)
 @click.option("--directory", "-dir", default="", type=str)
