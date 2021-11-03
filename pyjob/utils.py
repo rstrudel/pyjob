@@ -156,8 +156,8 @@ def args_from_config(template_args, config):
 
     list_dict_args = list(ParameterGrid(config))
     for i, kwargs in enumerate(list_dict_args):
-        for k, v in kwargs:
-            if "{" in v:
+        for k, v in kwargs.items():
+            if isinstance(v, str) and "{" in v:
                 list_dict_args[i][k] = v.format(**kwargs)
     for arg in template_args:
         if "*" not in arg and arg not in list_dict_args[0]:
