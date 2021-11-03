@@ -106,7 +106,7 @@ def parse_template(template):
     return args
 
 
-def expand_config(config):
+def list_to_range(config):
     # expand lists in a range
     for k, v in config.items():
         if len(v) == 1 and isinstance(v[0], list):
@@ -132,7 +132,7 @@ def load_config(scheduler_infos, config_file, directory):
     if sched_user_config_file.exists():
         config.update(sched_user_config)
     config.update(user_config)
-    config = expand_config(config)
+    config = list_to_range(config)
 
     required_args = ["job_log_dir", "job_name"]
     for arg in required_args:
