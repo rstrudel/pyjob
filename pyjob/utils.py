@@ -39,7 +39,7 @@ COLORS = {"t1": "yellow", "t2": "red"}
 
 def launch_jobs(scheduler_infos, template, list_dict_args, config, submit):
     jobs_name = list_dict_args[0]["job_name"]
-    job_log_dir = Path(list_dict_args[0]["job_log_dir"]).expanduser()
+    job_log_dir = Path(os.path.expandvars(list_dict_args[0]["job_log_dir"]))
     job_extension = scheduler_infos["extension"]
 
     # seperate fixed keys from changing ones
