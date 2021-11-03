@@ -156,10 +156,11 @@ def args_from_config(template_args, config):
 
     list_dict_args = list(ParameterGrid(config))
     for i, kwargs in enumerate(list_dict_args):
-        if "exp_name" in kwargs:
-            list_dict_args[i]["exp_name"] = kwargs["exp_name"].format(**kwargs)
+        for k, v in kwargs:
+            if "{" in v:
+                list_dict_args[i][k] = v.format(**kwargs)
     for arg in template_args:
-        if arg not in list_dict_args[0]:
+        if "*" not in arg and arg not in list_dict_args[0]:
             raise ValueError(
                 f"{arg} is a template argument but is not defined in config."
             )
